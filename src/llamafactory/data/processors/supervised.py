@@ -55,6 +55,14 @@ def _encode_supervised_example(
     for turn_idx, (source_ids, target_ids) in enumerate(encoded_pairs):
         if total_length >= cutoff_len:
             break
+        
+        # cot - only train on response portion
+        target_string = tokenizer.decode(target_ids)
+        if "</thinking>" in target_string:
+            thinking_msg = target_string.split("<response>")[0].strip()
+            response_msg = target_string.split("</thinking>")[-1].strip()
+            source_ids += tokenizer.encode(thinking_msg, add_special_tokens=False)
+            target_ids = tokenizer.encode(response_msg, add_special_tokens=False)
 
         source_len, target_len = infer_seqlen(len(source_ids), len(target_ids), cutoff_len - total_length)
         source_ids = source_ids[:source_len]
