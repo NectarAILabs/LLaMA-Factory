@@ -4,7 +4,8 @@
     "formatting": "sharegpt",
     "columns": {
       "messages": "conversations",
-      "system": "system"
+      "system": "system",
+      "tools": "tools"
     },
     "tags": {
       "role_tag": "from",
