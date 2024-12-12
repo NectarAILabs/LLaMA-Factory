@@ -1,0 +1,41 @@
+### model
+model_name_or_path: Qwen/Qwen2.5-72B-Instruct
+
+### method
+stage: sft
+do_train: true
+finetuning_type: lora
+lora_target: all
+lora_rank: 4
+deepspeed: examples/deepspeed/ds_z3_offload_config.json
+
+### dataset
+dataset: iggy_cot_sharegpt
+template: qwen
+cutoff_len: 8192
+max_samples: 20000
+overwrite_cache: true
+preprocessing_num_workers: 16
+
+### output
+output_dir: /home/azureuser/.cache/huggingface/qwen_iggy_12_5_rank4_last_8_high_lr
+logging_steps: 1
+save_steps: 10
+plot_loss: true
+overwrite_output_dir: true
+
+### train
+per_device_train_batch_size: 2
+gradient_accumulation_steps: 4
+learning_rate: 5.0e-4
+num_train_epochs: 2.0
+lr_scheduler_type: cosine
+warmup_ratio: 0.05
+bf16: true
+ddp_timeout: 180000000
+
+### eval
+val_size: 0.05
+per_device_eval_batch_size: 1
+eval_strategy: steps
+eval_steps: 10
